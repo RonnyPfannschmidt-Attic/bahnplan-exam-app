@@ -8,7 +8,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
 {
     function test_download_file()
     {
-        $content = download_file('out.html');
+        $content = download_file('tests/out.html');
         $this->assertContains('Deutsche Bahn', $content);
         return $content;
     }

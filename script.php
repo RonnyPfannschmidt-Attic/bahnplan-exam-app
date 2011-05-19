@@ -58,7 +58,7 @@ function draw_text_table ($table) {
 }
 
 
-$content = download_file('out.html'); #XXX: dynamic
+$content = download_file(make_url()); #XXX: dynamic
 $items = make_listing($content);
 print draw_text_table($items);
 

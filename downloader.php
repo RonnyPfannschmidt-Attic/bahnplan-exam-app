@@ -78,7 +78,7 @@ function make_listing($content)
 function make_url()
 {
     $service_url_format="http://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?".
-        "si=Weimar&bt=arr".
+        "si=008010136&bt=arr". #Gotha
         "&ti=%H:%M".
         "&date=%d.%m.%g".
         "&p=1111101&max=100&rt=1&use_realtime_filter=1".

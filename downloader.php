@@ -32,8 +32,8 @@ function scan_entry($node)
     $item["train"] = implode(' ', $train);
 
     $line = $time_span->parentNode->lastChild->wholeText;
-    $line = trim($line, ",");
-    $line = trim($line);
+    $line = str_replace('k.A.,', '', $line);
+    $line = trim($line, ", \t");
     $item["line"] = $line;
 
     $drift_span = $spans->item(2);

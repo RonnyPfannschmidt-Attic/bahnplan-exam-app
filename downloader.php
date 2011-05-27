@@ -19,7 +19,7 @@ function scan_entry($node)
     $target = trim($target);
     $target = trim($target, "(<>");
     $target = trim($target);
-    $item['target'] = $target;
+    $item['target'] = utf8_decode($target);
 
     $spans = $node->getElementsByTagName('span');
 
@@ -41,7 +41,7 @@ function scan_entry($node)
     {
         $drift = $drift_span->firstChild->wholeText;
         $drift = trim($drift);
-        $item["drift"] = $drift;
+        $item["drift"] = utf8_decode($drift);
     }
     else
         $item["drift"] = "";

@@ -43,6 +43,8 @@ function scan_entry($node)
         $drift = trim($drift);
         $item["drift"] = $drift;
     }
+    else
+        $item["drift"] = "";
 
     return $item;
 }

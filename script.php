@@ -57,8 +57,34 @@ function draw_text_table ($table) {
 
 }
 
+function draw_html_table($items)
+{
+    echo '
+<table>
+  <tr>
+    <th>target
+    <th>time
+    <th>train
+    <th>line
+    <th>drift
+';
+    foreach($items as $item)
+    {
+        echo "  <tr>\n";
+        echo "    <td>${item['target']}\n";
+        echo "    <td>${item['time']}\n";
+        echo "    <td>${item['train']}\n";
+        echo "    <td>${item['line']}\n";
+        echo "    <td>${item['drift']}\n";
+    }
+    echo "</table>\n";
+
+}
 
 $content = download_file(make_url()); #XXX: dynamic
 $items = make_listing($content);
-print draw_text_table($items);
-
+if(PHP_SAPI == 'cli')
+    print draw_text_table($items);
+else
+    print draw_html_table($items);
+?>

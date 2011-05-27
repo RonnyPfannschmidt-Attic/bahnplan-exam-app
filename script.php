@@ -83,6 +83,8 @@ function draw_html_table($items)
 
 $content = download_file(make_url()); #XXX: dynamic
 $items = make_listing($content);
+$items = array_slice($items, 0, 10);
+
 if(PHP_SAPI == 'cli')
     print draw_text_table($items);
 else

@@ -86,7 +86,6 @@ function make_url()
         "&p=1111101&max=100&rt=1&use_realtime_filter=1".
         "&start=yes";
     $d = strftime($service_url_format);
-    print $d."\n";
     return $d;
 }
 

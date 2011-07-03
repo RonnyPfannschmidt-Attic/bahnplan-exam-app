@@ -81,7 +81,7 @@ function draw_html_table($items)
 
 }
 
-$content = download_file(make_url()); #XXX: dynamic
+$content = file_get_contents(make_url()); #XXX: dynamic
 $items = make_listing($content);
 $items = array_slice($items, 0, 10);
 

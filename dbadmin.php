@@ -4,7 +4,7 @@ global $db;
 
 function create_db() {
     global $db;
-    $db->exec("create table fahrplan (
+    $res = $db->exec("create table fahrplan (
         station,
         target,
         planed_arrival DATETIME,
@@ -13,7 +13,9 @@ function create_db() {
         line,
         drift,
     PRIMARY KEY(station, target, planed_arrival, train, line)
-    );") or die(print_r($db->errorInfo(), true));
+);");
+    if ($res !== 0)
+        die(print_r($db->errorInfo(), true));
 }
 
 function clear_db()

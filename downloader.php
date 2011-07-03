@@ -1,14 +1,5 @@
 <?php
 
-function download_file($url)
-{
-    $url = (string) $url;
-    $fp = fopen($url, 'r');
-    $content = stream_get_contents($fp);
-    fclose($fp);
-    return (string)$content;
-}
-
 
 function scan_entry($node)
 {

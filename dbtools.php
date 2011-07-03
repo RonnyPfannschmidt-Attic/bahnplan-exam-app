@@ -1,8 +1,12 @@
 <?php
 
-@include 'dbconfig.php';
-global $db;
-$db = new PDO("sqlite:dbfile.sqlite");
+if (file_exists('dbconfig.php')) {
+    include 'dbconfig.php';
+    if(!isset($db))
+        die('dbconfig.php with no $db is stupid\n');
+} else {
+    $db = new PDO("sqlite:dbfile.sqlite");
+}
 
 function get_current($limit=50, $before=5)
 {

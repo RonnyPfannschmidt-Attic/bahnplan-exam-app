@@ -20,8 +20,16 @@ function create_db() {
 
 function clear_db()
 {
+    global $db;
     $db->exec("drop from fahrplan where 1");
 }
+
+function kill_db()
+{
+    global $db;
+    $db->exec("drop table fahrplan");
+}
+
 
 assert (PHP_SAPI == 'cli');
 

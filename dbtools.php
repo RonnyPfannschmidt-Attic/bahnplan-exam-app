@@ -1,6 +1,6 @@
 <?php
 
-//XXX: get from configuration
+@include 'dbconfig.php';
 global $db;
 $db = new PDO("sqlite:dbfile.sqlite");
 

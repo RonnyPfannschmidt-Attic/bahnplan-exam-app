@@ -90,7 +90,7 @@ function add_timestamps(&$item, $key, $basetime)
 {
     $itemtime = clone $basetime;
     $timeit = explode(':', $item["time"]);
-    $itemtime->setTime($timeit[0], $timeit[1]);
+    $itemtime->setTime($timeit[0], $timeit[1], 0);
     if ($itemtime < $basetime)
         $itemtime->modify('+1 day');
     $item["time"] = $itemtime;

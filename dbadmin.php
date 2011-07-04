@@ -1,5 +1,6 @@
 <?php
 require('dbtools.php');
+require 'downloader.php';
 global $db;
 
 function create_db() {
@@ -30,6 +31,19 @@ function kill_db()
     $db->exec("drop table fahrplan");
 }
 
+function sync_db()
+{
+    global $db;
+
+    $station = "Berlin";
+
+    $time = new DateTime();
+    $url = make_url($station, $time);
+    $content = file_get_contents($url);
+    $listing = make_listing($content, $time);
+    foreach($listing as &$item)
+        insert_or_update($station, $item);
+}
 
 assert (PHP_SAPI == 'cli');
 

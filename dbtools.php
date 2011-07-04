@@ -17,15 +17,17 @@ function get_current($limit=10, $before=5)
     $time = new DateTime();
     $time->modify("- $before minutes");
     $stmt = $db->prepare("
-        select station, target, train, line, planed_arrival as time, drift
+        select station, target, train, line, planed_arrival, drift
         from fahrplan
-        where station == ? and planed_arrival > ? limit ?");
+        where (station = ?)
+        and (planed_arrival > ?)
+        limit 0, ?");
     if($stmt === FALSE)
         die(print_r($db->errorInfo(), true));
     $stmt->bindParam(1, $my_station);
     $stmt->bindParam(2, $time->getTimestamp(), PDO::PARAM_INT);
     $stmt->bindParam(3, $limit, PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt->execute() or die(print_r($stmt->errorInfo(), true));
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 

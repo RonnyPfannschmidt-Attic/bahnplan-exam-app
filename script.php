@@ -81,8 +81,9 @@ function draw_html_table($items)
 
 }
 
-$content = file_get_contents(make_url("Gotha")); #XXX: dynamic
-$items = make_listing($content);
+$time = new DateTime();
+$content = file_get_contents(make_url("008010136", $time)); #XXX: dynamic
+$items = make_listing($content, $time);
 $items = array_slice($items, 0, 10);
 
 if(PHP_SAPI == 'cli')

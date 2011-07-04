@@ -73,10 +73,10 @@ function scan_page($content)
  * the default station is Gotha
  *
  * */
-function make_url($station)
+function make_url($station, $datetime)
 {
-    $time = date('H:i');
-    $date = date('d.m.y');
+    $time = $datetime->format('H:i');
+    $date = $datetime->format('d.m.y');
     $url = "http://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?".
         "si=$station&bt=arr".
         "&ti=$time".
@@ -91,6 +91,8 @@ function add_timestamps(&$item, $key, $basetime)
     $itemtime = clone $basetime;
     $timeit = explode(':', $item["time"]);
     $itemtime->setTime($timeit[0], $timeit[1]);
+    if ($itemtime < $basetime)
+        $itemtime->modify('+1 day');
     $item["time"] = $itemtime;
 }
 

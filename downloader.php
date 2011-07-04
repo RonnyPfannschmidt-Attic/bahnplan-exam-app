@@ -15,7 +15,7 @@ function scan_entry($node)
     $spans = $node->getElementsByTagName('span');
 
     $time_span = $spans->item(1);
-    $item["time"] = $time_span->firstChild->wholeText;
+    $item["time"] = trim($time_span->firstChild->wholeText);
 
     $train_span = $spans->item(0);
     $train = $train_span->firstChild->wholeText;
@@ -25,7 +25,7 @@ function scan_entry($node)
     $line = $time_span->parentNode->lastChild->wholeText;
     $line = str_replace('k.A.,', '', $line);
     $line = trim($line, ", \t");
-    $item["line"] = $line;
+    $item["line"] = trim($line, "\xC2\xA0\n");
 
     $drift_span = $spans->item(2);
     if($drift_span)

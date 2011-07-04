@@ -16,7 +16,9 @@ function get_current($limit=10, $before=5)
     global $my_station;
     $time = new DateTime();
     $time->modify("- $before minutes");
-    $stmt = $db->prepare("select * from fahrplan
+    $stmt = $db->prepare("
+        select station, target, train, line, planed_arrival as time, drift
+        from fahrplan
         where station == ? and planed_arrival > ? limit ?");
     if($stmt === FALSE)
         die(print_r($db->errorInfo(), true));

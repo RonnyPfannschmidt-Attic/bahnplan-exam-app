@@ -10,6 +10,7 @@ function scan_entry($node)
     $target = trim($target);
     $target = trim($target, "(<>");
     $target = trim($target);
+    $target = str_replace("\n", ' ', $target);
     $item['target'] = utf8_decode($target);
 
     $spans = $node->getElementsByTagName('span');
@@ -32,6 +33,7 @@ function scan_entry($node)
     {
         $drift = $drift_span->firstChild->wholeText;
         $drift = trim($drift);
+        $drift = str_replace("\n", ' ', $drift);
         $item["drift"] = utf8_decode($drift);
     }
     else
@@ -43,8 +45,8 @@ function scan_entry($node)
 function scan_page($content)
 {
     // die bahn liefert kaputtes html
-    $content = str_replace('class="noBG"', '', $content);
-
+    $tidy = new Tidy();
+    $content = $tidy->repairString($content);
     $doc = new DOMDocument();
     $doc->loadHtml($content);
     $doc->normalizeDocument();
@@ -84,9 +86,19 @@ function make_url($station)
     return $url;
 }
 
-function make_listing($content)
+function add_timestamps(&$item, $key, $basetime)
+{
+    $itemtime = clone $basetime;
+    $timeit = explode(':', $item["time"]);
+    $itemtime->setTime($timeit[0], $timeit[1]);
+    $item["time"] = $itemtime;
+}
+
+
+function make_listing($content, $datetime)
 {
     $listing = scan_page($content);
+    array_walk($listing, 'add_timestamps', $datetime);
     return $listing;
 }
 

@@ -40,7 +40,7 @@ function scan_entry($node)
     return $item;
 }
 
-function make_listing($content)
+function scan_page($content)
 {
     // die bahn liefert kaputtes html
     $content = str_replace('class="noBG"', '', $content);
@@ -67,17 +67,27 @@ function make_listing($content)
 
 
 
-
-function make_url()
+/* make a url for a station at the current date/time
+ * the default station is Gotha
+ *
+ * */
+function make_url($station)
 {
-    $service_url_format="http://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?".
-        "si=008010136&bt=arr". #Gotha
-        "&ti=%H:%M".
-        "&date=%d.%m.%g".
+    $time = date('H:i');
+    $date = date('d.m.y');
+    $url = "http://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?".
+        "si=$station&bt=arr".
+        "&ti=$time".
+        "&date=$date".
         "&p=1111101&max=100&rt=1&use_realtime_filter=1".
         "&start=yes";
-    $d = strftime($service_url_format);
-    return $d;
+    return $url;
+}
+
+function make_listing($content)
+{
+    $listing = scan_page($content);
+    return $listing;
 }
 
 ?>

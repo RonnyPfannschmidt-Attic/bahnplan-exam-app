@@ -5,13 +5,13 @@ global $db;
 function create_db() {
     global $db;
     $res = $db->exec("create table fahrplan (
-        station,
-        target,
+        station VARCHAR,
+        target VARCHAR,
         planed_arrival DATETIME,
         drift_arrival DATETIME,
-        train,
-        line,
-        drift,
+        train VARCHAR,
+        line VARCHAR,
+        drift VARCHAR,
     PRIMARY KEY(station, target, planed_arrival, train, line)
 );");
     if ($res !== 0)

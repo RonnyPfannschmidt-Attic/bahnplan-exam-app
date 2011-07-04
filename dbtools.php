@@ -7,14 +7,24 @@ if (file_exists('dbconfig.php')) {
 } else {
     $db = new PDO("sqlite:dbfile.sqlite");
 }
+if(!isset($my_station))
+    $my_station = "Berlin";
 
-function get_current($limit=50, $before=5)
+function get_current($limit=10, $before=5)
 {
+    global $db;
+    global $my_station;
+    $time = new DateTime();
+    $time->modify("- $before minutes");
     $stmt = $db->prepare("select * from fahrplan
-        where drift_arrival > (now() - ?) LIMIT ?;");
-    $stmt->bindParam(0, $before);
-    $stmt->bindParam(1, $limit);
-    return $stmt->fetch_all();
+        where station == ? and planed_arrival > ? limit ?");
+    if($stmt === FALSE)
+        die(print_r($db->errorInfo(), true));
+    $stmt->bindParam(1, $my_station);
+    $stmt->bindParam(2, $time->getTimestamp(), PDO::PARAM_INT);
+    $stmt->bindParam(3, $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function insert_or_update($station, $item)

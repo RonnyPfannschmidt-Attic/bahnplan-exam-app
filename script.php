@@ -3,7 +3,7 @@ require 'downloader.php';
 require 'table_printers.php';
 
 $time = new DateTime();
-$content = file_get_contents(make_url("Berlin", $time)); #XXX: dynamic
+$content = file_get_contents(make_url("Gotha", $time)); #XXX: dynamic
 $items = make_listing($content, $time);
 
 

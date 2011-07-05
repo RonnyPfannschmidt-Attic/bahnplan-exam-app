@@ -6,9 +6,11 @@ $time = new DateTime();
 $content = file_get_contents(make_url("Berlin", $time)); #XXX: dynamic
 $items = make_listing($content, $time);
 
-array_walk($items, function(&$item) {
+
+function format_time(&$item) {
     $item["time"] = $item["time"]->format('d.m.y H:i');
-});
+}
+array_walk($items, 'format_time');
 $items = array_slice($items, 0, 10);
 
 if(PHP_SAPI == 'cli')

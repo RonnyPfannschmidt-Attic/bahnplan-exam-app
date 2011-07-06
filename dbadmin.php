@@ -63,7 +63,6 @@ function show_db()
 
 $web_commands = array(
     'sync' => "sync the database with the bahn",
-    'show' => "show the table",
     'create' => "create the database tables");
 
 if(PHP_SAPI == 'cli') {
@@ -90,11 +89,12 @@ if(PHP_SAPI == 'cli') {
 <h1> Bahn Abfahrplan Admin
 <form>
     <select name="cmd">
-        <option value="create">create the db</option>
         <option value="sync">sync from the bahn</option>
+        <option value="create">create the db</option>
     </select>
     <input type=submit>
 </form>
 <?php
+show_db();
 }
 ?>

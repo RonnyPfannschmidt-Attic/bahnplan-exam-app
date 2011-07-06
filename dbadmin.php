@@ -54,12 +54,16 @@ function show_db()
     global $db;
     $items = get_current();
     array_slice($items, 'format_time');
-    print draw_text_table($items);
+    if(PHP_SAPI == 'cli')
+        print draw_text_table($items);
+    else
+        print draw_html_table($items);
 }
 
 $web_commands = array(
-    'create' => "create the database tables",
-    'sync' => "sync the database with the bahn");
+    'sync' => "sync the database with the bahn",
+    'show' => "show the table",
+    'create' => "create the database tables");
 
 if(PHP_SAPI == 'cli') {
     $cmds = array_slice($argv, 1);

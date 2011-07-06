@@ -42,6 +42,7 @@ function sync_db()
     global $my_station;
 
     $time = new DateTime();
+    $time->setTimeZone(new DateTimeZone("CEST"));
     $url = make_url($my_station, $time);
     $content = file_get_contents($url);
     $listing = make_listing($content, $time);
@@ -53,7 +54,7 @@ function show_db()
 {
     global $db;
     $items = get_current();
-    array_slice($items, 'format_time');
+    array_walk($items, 'format_time');
     if(PHP_SAPI == 'cli')
         print draw_text_table($items);
     else

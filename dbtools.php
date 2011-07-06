@@ -12,7 +12,8 @@ if(!isset($my_station))
 
 
 function timestamp_to_datetime(&$item) {
-    $item["time"] = DateTime::createFromFormat('U', "{$item['time']}");
+    $item["time"] = new DateTime("@".$item['time']);
+    $item["time"]->setTimeZone(new DateTimeZone('CEST'));
 }
 
 function get_current($limit=10, $before=5)
@@ -23,11 +24,13 @@ function get_current($limit=10, $before=5)
     $time->modify("- $before minutes");
     $time =  (int)$time->format('U');
     $stmt = $db->prepare("
-        select station, target, train, line, planed_arrival, drift
+        select station, target, train, line, planed_arrival as time, drift
         from fahrplan
         where (station = ?)
         and (planed_arrival > ?)
-        limit 0, ?");
+        order by planed_arrival
+        limit 0, ?
+        ");
     if($stmt === FALSE)
         die(print_r($db->errorInfo(), true));
     $stmt->bindParam(1, $my_station);

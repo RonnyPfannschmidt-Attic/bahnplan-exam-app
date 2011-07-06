@@ -4,6 +4,10 @@ require 'downloader.php';
 require 'table_printers.php';
 global $db;
 
+function format_time(&$item) {
+    $item["time"] = $item["time"]->format('d.m.y H:i');
+}
+
 function create_db() {
     global $db;
     $res = $db->exec("create table fahrplan (
@@ -49,15 +53,43 @@ function show_db()
 {
     global $db;
     $items = get_current();
+    array_slice($items, 'format_time');
     print draw_text_table($items);
 }
-assert (PHP_SAPI == 'cli');
 
+$web_commands = array(
+    'create' => "create the database tables",
+    'sync' => "sync the database with the bahn");
 
-$cmds = array_slice($argv, 1);
-foreach($cmds as $cmd) {
-    call_user_func("{$cmd}_db");
+if(PHP_SAPI == 'cli') {
+    $cmds = array_slice($argv, 1);
+    foreach($cmds as $cmd) {
+        call_user_func("{$cmd}_db");
+    }
+} else {
+    if(isset($_GET["cmd"]))
+        $cmd = $_GET["cmd"];
+    else
+        $cmd = null;
+?>
+<title> bahn admin - doing <?= $cmd or 'nuthing' ?></title>
+<?php
+    if(isset($web_commands[$cmd]))
+        call_user_func("{$cmd}_db");
+    else if($cmd === null)
+        echo 'NUll<br>\n';
+    else
+        echo "$cmd not allowed<br>\n";
+
+?>
+<h1> Bahn Abfahrplan Admin
+<form>
+    <select name="cmd">
+        <option value="create">create the db</option>
+        <option value="sync">sync from the bahn</option>
+    </select>
+    <input type=submit>
+</form>
+<?php
 }
-
-
 ?>

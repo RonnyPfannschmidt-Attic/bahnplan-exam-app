@@ -89,9 +89,13 @@ function make_url($station, $datetime)
 function add_timestamps(&$item, $key, $basetime)
 {
     $itemtime = clone $basetime;
+    $comparetime = clone $basetime;
+    // needed for the case where basetime
+    // is a few seconds more than the fixed itemtime
+    $comparetime->modify('- 5 minutes');
     $timeit = explode(':', $item["time"]);
     $itemtime->setTime($timeit[0], $timeit[1], 0);
-    if ($itemtime < $basetime)
+    if ($itemtime < $comparetime)
         $itemtime->modify('+1 day');
     $item["time"] = $itemtime;
 }

@@ -3,7 +3,9 @@ require 'downloader.php';
 require 'table_printers.php';
 
 $time = new DateTime();
-$content = file_get_contents(make_url("Gotha", $time)); #XXX: dynamic
+$url = make_url("Gotha", $time); #XXX: dynamic
+print "$url\n";
+$content = file_get_contents($url);
 $items = make_listing($content, $time);
 
 

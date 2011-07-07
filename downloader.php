@@ -78,7 +78,7 @@ function make_url($station, $datetime)
     $time = $datetime->format('H:i');
     $date = $datetime->format('d.m.y');
     $url = "http://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?".
-        "si=$station&bt=arr".
+        "si=$station&bt=dep".
         "&ti=$time".
         "&date=$date".
         "&p=1111101&max=100&rt=1&use_realtime_filter=1".

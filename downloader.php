@@ -60,7 +60,7 @@ function scan_page($content)
         $node = $divs->item($pos);
 
         $class = $node->getAttribute('class');
-        if ($class == "sqdetails trow")
+        if ($class == "sqdetailsDep trow")
             $listing[] = scan_entry($node);
     }
     return $listing;

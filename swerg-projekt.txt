@@ -126,5 +126,37 @@ sync_db
     (siehe dbconfig.php)
 
 
+dbconfig.php
+~~~~~~~~~~~~
+
+Optionale Konfigurationsdatei die Datenbankverbindung
+und Haltestelle konfiguriert
+
+$db required
+    PDO verbinung zur Datenbank
+$my_station
+    Name oder Nummer der Haltestelle
+
+
+Aufbau der Datenbank
+--------------------
+
+
+==============  =========== ============
+Feld            Typ         Beschreibung
+==============  =========== ============
+station         VARCHAR(30) Name oder Nummer der Station
+target          VARCHAR(30) Ziel des Zuges
+planed_arrival  BIGINT      Geplante Ankunft
+drift_arrival   BIGINT      Reserviert um später Verspaetungen
+                            auf Datenbankebene mit Einzubeziehen
+train           VARCHAR(30) Zugnummer
+line            VARCHAR(30) Gleis
+drift           VARCHAR(30) Textuelle Beschreibung der Verspaetung
+==============  =========== ============
+
+
+
+
 
 

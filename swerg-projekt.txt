@@ -1,0 +1,130 @@
+Webscraping basierte Datenextraktion zur applikationsintegrierten Darstellung von Bahnabfahrtstafeln
+====================================================================================================
+
+
+:Author: Ronny Pfannschmidt, 250154
+
+
+Problemstellung
+---------------
+
+Um ein optimales applikationsintegriertes Benutzungserlebniss für die Bahntafeln zu bieten,
+ist es notwendig die Daten der Bahn aufzubereiten.
+
+Vorüberlegungen
+---------------
+
+Programmiersprache PHP 5.2
+    * einfach Integration in die bestehende Applikation
+Lokales Caching
+    * einfache Verwendung der Daten via Datenbankabfrage
+    * wesentlich kürzere Antwortzeiten
+
+
+Umsetzung
+---------
+
+Da die Bahn keine API zur Verfügung stellt,
+muss auf Webscraping zurückgegriffen werden
+(parsen der Websites die für Endbenutzer gedacht sind).
+Die Websites an sich sind fehlerhaft,
+was die Verwendung von `html-tidy` notwendig macht.
+
+Das eigentliche Programm ist in 3 Hauptkomponenten geteilt.
+
+Datenbankabstraktion
+    stellt Hilfsfunktionen zur Verfügung,
+    mit denen man die Datenbank erstellen,
+    entfernen, und updaten kann.
+Scrapper
+    stellt Hilfsfunktionen zur Verfügung,
+    mit denen man Url's für das Scrapen 
+    basierend auf Bahnhof + Zeit generieren kann,
+    sowie den eigentlichen Scrapper,
+    der aus dem Inhalt einer Bahn-tafel
+    der mobilen Bahnwebsite eine Liste
+    an Informationsmappings generiert,
+    welche leicht an den Datenbank-updater übergeben werden können
+Administrationstool
+    stellt Funktionen zur Datenbankverwaltung
+    sowie für Web-basiertes aktualisieren der Daten zur Verfügung.
+
+Programmübersicht
+------------------
+
+
+downloader.php
+~~~~~~~~~~~~~~
+
+Hilfsfunktionen für Download und Analyse der Website
+
+scan_entry (dom node) -> entry
+    Analyse und Extraktion der Daten eines einzelnen Tabelleneintrags
+scan_page (content) -> entries
+    Führt zuerst eine HTML Bereinigung des Inhaltes durch um anschliessend
+    alle Einträge einer Website unter Verwendung von `scan_entry` zu parsen
+make_url (station, datetime) -> url
+    Generiert eine URL, die für den angegebenen Bahnhof und
+    die angegebene Startzeit die Abfahrtstafel für die
+    darauffolgend abfahrenden Züge gültig ist
+add_timestamps (&item, $key, $basetime)
+    Hilfsfunktion welche dazu dient den Zeitstring für einen Eintrag
+    in ein Datetime Objekt umzuwandeln und die Datumskorrektur vornimmt
+make_listing (content, datetime)
+    kombiniert scan_page und add_timestamps
+
+
+dbtools.php
+~~~~~~~~~~~
+
+Hilfsfunktionen für die Verwendung der Datenbank
+
+
+timestamp_to_datetime (&item)
+    wandelt die Timestamps eines Eintrages aus der Datenbank
+    in ein Datetime objekt
+get_current (limit=10, before=5)
+    Gibt die nächsten <limit> Abfahrten zurück.
+    Die Startzeit berechnet sich aus jetzt() - ($before minuten)
+insert_or_update($station, $item)
+    Erstellung oder Aktualisierung eines Datenbankeintrages
+    zu einer bestimmten Station.
+
+table_printers.php
+~~~~~~~~~~~~~~~~~~
+
+Hilsfunktionen um Tabellarische listings für listen von Einträgen anzuzeigen
+
+draw_text_table (table)
+    generiert eine Ascii Art Tabelle für das gegebene Listing
+draw_html_table (items)
+    generiert eine HTML Tabelle für das gegebene Listing
+
+script.php
+~~~~~~~~~~
+
+Simples Kommandozeilen/Web Script welches einen aktuellen Bahnplan für Gotha
+herunterlaedt und als Tabelle darstellt.
+
+dbadmin.php
+~~~~~~~~~~~
+
+Administratives Script für Erstellung, Bereinigung, Aktualisierung
+und Darstellung der Datenbank
+
+format_time (&item)
+    Hilfsfunktion die den Timestamp eines Eintrages
+    in einen Formatierten string umwandelt.
+create_db
+    erstellt die Datenbanktabelle
+clear_db
+    entfertnt **ALLE** Eintraege in der Datenbanktabelle
+kill_db
+    entfernt die Datenbanktabelle
+sync_db
+    aktualisiert die Datenbankeintraege fuer die eingestellte Haltestelle
+    (siehe dbconfig.php)
+
+
+
+

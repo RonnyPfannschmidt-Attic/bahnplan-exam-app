@@ -166,7 +166,7 @@ drift_arrival   BIGINT      Reserviert um später Verspätungen
                             auf Datenbankebene mit Einzubeziehen
 train           VARCHAR(30) Zugnummer
 line            VARCHAR(30) Gleis
-drift           VARCHAR(30) Textuelle Beschreibung der Verspätung
+drift           TEXT        Textuelle Beschreibung der Verspätung
 canceled        "BOOL"      wenn wahr, dann Ausfall des Zuges
 ==============  =========== ============
 

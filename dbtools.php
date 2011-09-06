@@ -26,7 +26,8 @@ function get_current($limit=10, $before=5)
     $stmt = $db->prepare("
         select station, target, train, line, planed_arrival as time, drift
         from fahrplan
-        where (station = ?) and (canceled = 0)
+        where (station = ?)
+        and (canceled = 0)
         and (planed_arrival > ?)
         order by planed_arrival
         limit 0, ?
@@ -50,7 +51,7 @@ function insert_or_update($station, $item)
             station, train, line, 
             target, planed_arrival, drift,
             canceled
-        ) VALUES (?, ?, ?, ?, ?, ?m ?)");
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)");
     if ($stmt == NULL)
         die(print_r($db->errorInfo(), true));
     $time = (int)$item["time"]->format('U');

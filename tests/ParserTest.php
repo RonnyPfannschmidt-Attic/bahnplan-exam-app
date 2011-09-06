@@ -27,6 +27,11 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $content = file_get_contents('tests/out_ausfall.html');
         $listing = make_listing($content, new DateTime());
+        $filtered = array_filter($listing, function($item) {return $item["drift"];});
+        $filtered = array_filter($filtered, function($item) {return $item["drift"] != utf8_decode("pünktl.");});
+        assert($filtered[1]["canceled"]);
+
+
 
     }
 }

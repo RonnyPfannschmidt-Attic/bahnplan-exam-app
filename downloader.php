@@ -48,6 +48,7 @@ function scan_entry($node)
     else
         $item["drift"] = "";
 
+    $item["canceled"] = $item["drift"] == utf8_decode("Zug fällt aus");
     return $item;
 }
 

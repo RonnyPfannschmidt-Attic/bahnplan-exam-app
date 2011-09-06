@@ -23,7 +23,16 @@ function scan_entry($node)
     $train = preg_split('/\s+/', $train);
     $item["train"] = implode(' ', $train);
 
-    $line = $time_span->parentNode->lastChild->wholeText;
+
+    $line_or_extra = $time_span->parentNode->lastChild;
+
+    if ($line_or_extra instanceof DomElement) {
+        $line = $line_or_extra->previousSibling->previousSibling->wholeText;
+    } else {
+        $line = $line_or_extra->wholeText;
+    }
+
+
     $line = str_replace('k.A.,', '', $line);
     $line = trim($line, ", \t");
     $item["line"] = trim($line, "\xC2\xA0\n");

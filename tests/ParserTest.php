@@ -23,9 +23,10 @@ class ParserTest extends PHPUnit_Framework_TestCase
     }
 
 
-    public function test_foo()
+    public function test_drift_cancelation()
     {
-        return;
+        $content = file_get_contents('tests/out_ausfall.html');
+        $listing = make_listing($content, new DateTime());
 
     }
 }

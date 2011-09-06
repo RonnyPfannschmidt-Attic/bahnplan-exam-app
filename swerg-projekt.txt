@@ -148,11 +148,12 @@ Feld            Typ         Beschreibung
 station         VARCHAR(30) Name oder Nummer der Station
 target          VARCHAR(30) Ziel des Zuges
 planed_arrival  BIGINT      Geplante Ankunft
-drift_arrival   BIGINT      Reserviert um später Verspaetungen
+drift_arrival   BIGINT      Reserviert um später Verspätungen
                             auf Datenbankebene mit Einzubeziehen
 train           VARCHAR(30) Zugnummer
 line            VARCHAR(30) Gleis
-drift           VARCHAR(30) Textuelle Beschreibung der Verspaetung
+drift           VARCHAR(30) Textuelle Beschreibung der Verspätung
+canceled*        "BOOL"      wenn wahr, dann Ausfall des Zuges
 ==============  =========== ============
 
 

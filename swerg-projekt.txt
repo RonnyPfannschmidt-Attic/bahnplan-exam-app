@@ -2,7 +2,9 @@ Webscraping basierte Datenextraktion zur applikationsintegrierten Darstellung vo
 ====================================================================================================
 
 
-:Author: Ronny Pfannschmidt, 250154
+:Author: Ronny Pfannschmidt
+:Matrikel: 250154
+
 
 
 Problemstellung
@@ -10,6 +12,10 @@ Problemstellung
 
 Um ein optimales applikationsintegriertes Benutzungserlebniss für die Bahntafeln zu bieten,
 ist es notwendig die Daten der Bahn aufzubereiten.
+
+.. raw:: pdf
+
+    PageBreak oneColumn
 
 Vorüberlegungen
 ---------------
@@ -48,6 +54,10 @@ Scrapper
 Administrationstool
     stellt Funktionen zur Datenbankverwaltung
     sowie für Web-basiertes aktualisieren der Daten zur Verfügung.
+
+.. raw:: pdf
+
+    PageBreak oneColumn
 
 Programmübersicht
 ------------------
@@ -104,7 +114,11 @@ script.php
 ~~~~~~~~~~
 
 Simples Kommandozeilen/Web Script welches einen aktuellen Bahnplan für Gotha
-herunterlaedt und als Tabelle darstellt.
+herunterlädt und als Tabelle darstellt.
+
+.. raw:: pdf
+
+    PageBreak oneColumn
 
 dbadmin.php
 ~~~~~~~~~~~
@@ -118,11 +132,11 @@ format_time (&item)
 create_db
     erstellt die Datenbanktabelle
 clear_db
-    entfertnt **ALLE** Eintraege in der Datenbanktabelle
+    entfertnt **ALLE** Einträge in der Datenbanktabelle
 kill_db
     entfernt die Datenbanktabelle
 sync_db
-    aktualisiert die Datenbankeintraege fuer die eingestellte Haltestelle
+    aktualisiert die Datenbankeinträge für die eingestellte Haltestelle
     (siehe dbconfig.php)
 
 
@@ -153,7 +167,7 @@ drift_arrival   BIGINT      Reserviert um später Verspätungen
 train           VARCHAR(30) Zugnummer
 line            VARCHAR(30) Gleis
 drift           VARCHAR(30) Textuelle Beschreibung der Verspätung
-canceled*        "BOOL"      wenn wahr, dann Ausfall des Zuges
+canceled        "BOOL"      wenn wahr, dann Ausfall des Zuges
 ==============  =========== ============
 
 

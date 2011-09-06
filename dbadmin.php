@@ -17,7 +17,8 @@ function create_db() {
         drift_arrival BIGINT,
         train VARCHAR(30),
         line VARCHAR(30),
-        drift VARCHAR(30),
+        drift TEXT,
+        canceled INT default 0,
     PRIMARY KEY(station, target, planed_arrival, train, line)
 );");
     if ($res !== 0)

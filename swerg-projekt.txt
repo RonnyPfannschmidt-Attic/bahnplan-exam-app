@@ -140,6 +140,7 @@ sync_db
     (siehe dbconfig.php)
 
 
+
 dbconfig.php
 ~~~~~~~~~~~~
 
@@ -172,6 +173,17 @@ canceled        "BOOL"      wenn wahr, dann Ausfall des Zuges
 
 
 
+Beispielufrufe des Scriptes
+---------------------------
 
+::
+
+  $ php dbadmin.php create # erstellt die datenbank
+  $ php dbadmin.php sync # aktualisieren
+  $ php dbadmin.php clear # tabelleninhalt entfernen
+  $ php dbadmin.php kill # tabelle entfernen
+
+::
+    $ php script.php
 
 

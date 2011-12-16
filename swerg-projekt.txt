@@ -10,7 +10,8 @@ Webscraping basierte Datenextraktion zur applikationsintegrierten Darstellung vo
 Problemstellung
 ---------------
 
-Um ein optimales applikationsintegriertes Benutzungserlebniss für die Bahntafeln zu bieten,
+Um ein optimales applikationsintegriertes Benutzungserlebniss
+für die Bahntafeln zu bieten,
 ist es notwendig die Daten der Bahn aufzubereiten.
 
 .. raw:: pdf
@@ -41,7 +42,7 @@ Das eigentliche Programm ist in 3 Hauptkomponenten geteilt.
 Datenbankabstraktion
     stellt Hilfsfunktionen zur Verfügung,
     mit denen man die Datenbank erstellen,
-    entfernen, und updaten kann.
+    entfernen und updaten kann.
 Scrapper
     stellt Hilfsfunktionen zur Verfügung,
     mit denen man Url's für das Scrapen 
@@ -69,10 +70,14 @@ downloader.php
 Hilfsfunktionen für Download und Analyse der Website
 
 scan_entry (dom node) -> entry
-    Analyse und Extraktion der Daten eines einzelnen Tabelleneintrags
+    Extrahiert ein kompaktes Mapping aus einem Dom Element 
+    fuer einen einzelnen Fahrplaneintrag.
+    Es enthaelt alle Informationen die Notwendig sind,
+    um eine Tabellenspalte zu fuellen (siehe Datenbankschema)
 scan_page (content) -> entries
-    Führt zuerst eine HTML Bereinigung des Inhaltes durch um anschliessend
-    alle Einträge einer Website unter Verwendung von `scan_entry` zu parsen
+    Führt zuerst eine HTML Bereinigung des Inhaltes durch,
+    um anschliessend alle Einträge einer Website
+    unter Verwendung von `scan_entry` zu parsen
 make_url (station, datetime) -> url
     Generiert eine URL, die für den angegebenen Bahnhof und
     die angegebene Startzeit die Abfahrtstafel für die
@@ -80,8 +85,10 @@ make_url (station, datetime) -> url
 add_timestamps (&item, $key, $basetime)
     Hilfsfunktion welche dazu dient den Zeitstring für einen Eintrag
     in ein Datetime Objekt umzuwandeln und die Datumskorrektur vornimmt
-make_listing (content, datetime)
-    kombiniert scan_page und add_timestamps
+make_listing (content, datetime) -> listing
+    Kombiniert scan_page und add_timestamps.
+    Zuerst wird das listing generiert,
+    dann werden in Jedem eintrag die Datumsangaben ersetzt.
 
 
 dbtools.php
@@ -90,12 +97,12 @@ dbtools.php
 Hilfsfunktionen für die Verwendung der Datenbank
 
 
-timestamp_to_datetime (&item)
-    wandelt die Timestamps eines Eintrages aus der Datenbank
-    in ein Datetime objekt
+timestamp_to_datetime (&$item)
+    Wandelt die Timestamps eines Datenbankeintrages in ein Datetime objekt
 get_current (limit=10, before=5)
     Gibt die nächsten <limit> Abfahrten zurück.
     Die Startzeit berechnet sich aus jetzt() - ($before minuten)
+    Es wird immer die Bahnhaltestelle aus der Konfiguation Verwendet
 insert_or_update($station, $item)
     Erstellung oder Aktualisierung eines Datenbankeintrages
     zu einer bestimmten Station.
@@ -103,7 +110,9 @@ insert_or_update($station, $item)
 table_printers.php
 ~~~~~~~~~~~~~~~~~~
 
-Hilsfunktionen um Tabellarische listings für listen von Einträgen anzuzeigen
+Hilfsfunktionen um Tabellarische listings für listen von Einträgen anzuzeigen.
+Sie nehmen Listen von Mappings entgeen und verwenden die Keys der Mappings
+als Tabellenueberschriften
 
 draw_text_table (table)
     generiert eine Ascii Art Tabelle für das gegebene Listing
@@ -172,18 +181,54 @@ canceled        "BOOL"      wenn wahr, dann Ausfall des Zuges
 ==============  =========== ============
 
 
+.. raw:: pdf
+
+    PageBreak oneColumn
 
 Beispielufrufe des Scriptes
 ---------------------------
 
-::
+dbadmin
+  ::
 
-  $ php dbadmin.php create # erstellt die datenbank
-  $ php dbadmin.php sync # aktualisieren
-  $ php dbadmin.php clear # tabelleninhalt entfernen
-  $ php dbadmin.php kill # tabelle entfernen
+    $ php dbadmin.php create # erstellt die datenbank
+    $ php dbadmin.php sync # aktualisieren
+    $ php dbadmin.php clear # tabelleninhalt entfernen
+    $ php dbadmin.php kill # tabelle entfernen
 
-::
+script
+  ::
+
     $ php script.php
+    +--------------------+----------------+----------+--------+---------+--+
+    | 1) target          | 2) time        | 3) train | 4) li  | 5) dri  | 6) cancele |
+    +--------------------+----------------+----------+--------+---------+--+
+    | Magdeburg Hbf      | 15.12.11 20:24 | IC 2255  | Gl. 3  | puenktl.|  |
+    | Gera Hbf           | 15.12.11 20:28 | RE 3667  | Gl. 1  | puenktl.|  |
+    | Eisenach           | 15.12.11 20:33 | RB 16330 | Gl. 2  | puenktl.|  |
+    | Leipzig Hbf        | 15.12.11 20:35 | RB 16337 | Gl. 3  | puenktl.|  |
+    | Bad Langensalza    | 15.12.11 20:39 | EB 80668 | Gl. 1a | puenktl.|  |
+    | Frankfurt(Main)Hbf | 15.12.11 20:46 | ICE 1552 | Gl. 2  | ca. +5  |  |
+    | Dresden Hbf        | 15.12.11 21:22 | ICE 1657 | Gl. 3  | ca. +5  |  |
+    | Eisenach           | 15.12.11 21:24 | RB 16332 | Gl. 2  | puenktl.|  |
+    | Halle(Saale)Hbf    | 15.12.11 21:35 | RB 16339 | Gl. 3  | puenktl.|  |
+    | Leinefelde         | 15.12.11 21:39 | RE 3666  | Gl. 1  | puenktl.|  |
+    +--------------------+----------------+----------+--------+---------+--+
 
 
+
+.. raw:: pdf
+
+    PageBreak oneColumn
+
+Beispielufruf der Api
+---------------------
+
+Der einzige Einsprungpunkt der fuer externe Verwendung gedacht ist,
+ist `get_current`
+
+::
+    $items = get_current(20,3); # holt die 20 naechsten eintraege
+                               # die bei now() - 3 minuten beginnen
+
+    draw_html_table(items); # html tabelle ausgeben

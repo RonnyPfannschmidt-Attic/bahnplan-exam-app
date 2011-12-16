@@ -228,6 +228,7 @@ Der einzige Einsprungpunkt der fuer externe Verwendung gedacht ist,
 ist `get_current`
 
 ::
+
     $items = get_current(20,3); # holt die 20 naechsten eintraege
                                # die bei now() - 3 minuten beginnen
 

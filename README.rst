@@ -1,6 +1,10 @@
 Bahn Info Script
 ==================
 
+.. note::
+
+  this code was written as project for an exam at the university, php was requested :)
+
 requirements (debian)
 -----------------------
 
